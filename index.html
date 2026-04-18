@@ -16,6 +16,16 @@
   .nav-links{display:flex;gap:36px;list-style:none;}
   .nav-links a{color:#999;text-decoration:none;font-size:11px;letter-spacing:3px;text-transform:uppercase;transition:color 0.2s;}
   .nav-links a:hover{color:var(--white);}
+  .hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;padding:4px;z-index:101;}
+  .hamburger span{display:block;width:24px;height:1px;background:var(--white);transition:all 0.3s;}
+  .hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}
+  .hamburger.open span:nth-child(2){opacity:0;}
+  .hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}
+  .mobile-menu{display:none;position:fixed;top:64px;left:0;width:100%;background:rgba(8,8,8,0.98);backdrop-filter:blur(12px);border-bottom:1px solid #1f1f1f;z-index:99;padding:24px 0;}
+  .mobile-menu.open{display:block;}
+  .mobile-menu ul{list-style:none;display:flex;flex-direction:column;}
+  .mobile-menu ul li a{display:block;padding:16px 24px;color:#999;text-decoration:none;font-size:11px;letter-spacing:4px;text-transform:uppercase;border-bottom:1px solid #111;transition:color 0.2s;}
+  .mobile-menu ul li a:hover{color:var(--white);}
   #hero{height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 72px;
     background:url(imagens/img-02-a3906bac73.png) center/cover no-repeat;}
   .hero-eyebrow{font-size:11px;letter-spacing:5px;color:var(--red);text-transform:uppercase;margin-bottom:20px;}
@@ -128,13 +138,24 @@
   .fade-up{opacity:0;transform:translateY(30px);transition:opacity 0.7s,transform 0.7s;}
   .fade-up.visible{opacity:1;transform:translateY(0);}
   @media(max-width:900px){
-    nav{padding:0 24px;} .nav-links{display:none;} section{padding:80px 24px;}
-    .historia-grid,.edicoes-grid,.videos-grid{grid-template-columns:1fr;}
+    nav{padding:0 20px;}
+    .nav-links{display:none;}
+    .hamburger{display:flex;}
+    section{padding:64px 20px;}
+    #hero{padding:0 20px 56px;}
+    .historia-grid{grid-template-columns:1fr;gap:32px;min-height:auto;}
+    .historia-img{display:none;}
+    .edicoes-grid{grid-template-columns:1fr;}
+    .videos-grid{grid-template-columns:1fr;}
     .dj-grid{grid-template-columns:repeat(2,1fr);}
-    footer{flex-direction:column;gap:16px;text-align:center;}
-    .galeria-header{padding:16px 20px;} .galeria-main{padding:16px 56px 12px;}
+    footer{flex-direction:column;gap:16px;text-align:center;padding:32px 20px;}
+    .galeria-header{padding:16px 20px;}
+    .galeria-main{padding:16px 48px 12px;}
     .g-btn.prev{left:4px;} .g-btn.next{right:4px;}
     .galeria-thumbs{padding:0 20px 20px;} .g-thumb{width:56px;height:56px;}
+    .section-title{margin-bottom:32px;}
+    .radio-card{width:180px;}
+    .contact-link:hover{padding-left:28px;}
   }
 </style>
 </head>
@@ -150,7 +171,21 @@
     <li><a href="#djs">DJs</a></li>
     <li><a href="#contato">Contato</a></li>
   </ul>
+  <button class="hamburger" id="hamburger" aria-label="Menu">
+    <span></span><span></span><span></span>
+  </button>
 </nav>
+<div class="mobile-menu" id="mobileMenu">
+  <ul>
+    <li><a href="#historia" onclick="closeMobileMenu()">Hist&oacute;ria</a></li>
+    <li><a href="#ingressos" onclick="closeMobileMenu()">Ingressos</a></li>
+    <li><a href="#edicoes" onclick="closeMobileMenu()">Edi&ccedil;&otilde;es</a></li>
+    <li><a href="#radioshow" onclick="closeMobileMenu()">Radio Show</a></li>
+    <li><a href="#videos" onclick="closeMobileMenu()">V&iacute;deos</a></li>
+    <li><a href="#djs" onclick="closeMobileMenu()">DJs</a></li>
+    <li><a href="#contato" onclick="closeMobileMenu()">Contato</a></li>
+  </ul>
+</div>
 <section id="hero">
   <p class="hero-eyebrow">Underground Electronic Music</p>
   <h1 class="hero-title">DEEP<br>DASH</h1>
@@ -388,6 +423,10 @@ document.addEventListener('DOMContentLoaded',function(){
 });
 var obs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
 document.querySelectorAll('.fade-up').forEach(function(el){obs.observe(el);});
+var hamburger=document.getElementById('hamburger');
+var mobileMenu=document.getElementById('mobileMenu');
+hamburger.addEventListener('click',function(){hamburger.classList.toggle('open');mobileMenu.classList.toggle('open');});
+function closeMobileMenu(){hamburger.classList.remove('open');mobileMenu.classList.remove('open');}
 </script>
 </body>
 </html>
