@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Deep Dash</title>
+<link rel="icon" type="image/png" href="imagens/img-01-d7beb00da8.png">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--black:#080808;--white:#f5f5f5;--red:#c8102e;--gray:#1a1a1a;--text-muted:#666;}
+  *{margin:0;padding:0;box-sizing:border-box;} html{scroll-behavior:smooth;}
+  body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;}
+  nav{position:fixed;top:0;width:100%;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 48px;height:64px;background:rgba(8,8,8,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #1f1f1f;}
+  .nav-logo{font-family:'Bebas Neue',sans-serif;font-size:26px;letter-spacing:6px;color:var(--white);text-decoration:none;}
+  .nav-logo span{color:var(--red);}
+  .nav-links{display:flex;gap:36px;list-style:none;}
+  .nav-links a{color:#999;text-decoration:none;font-size:11px;letter-spacing:3px;text-transform:uppercase;transition:color 0.2s;}
+  .nav-links a:hover{color:var(--white);}
+  #hero{height:100vh;display:flex;flex-direction:column;justify-content:flex-end;padding:0 48px 72px;
+    background:url(imagens/img-02-a3906bac73.png) center/cover no-repeat;}
+  .hero-eyebrow{font-size:11px;letter-spacing:5px;color:var(--red);text-transform:uppercase;margin-bottom:20px;}
+  .hero-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(72px,12vw,160px);line-height:0.9;letter-spacing:2px;}
+  .hero-sub{margin-top:28px;font-size:14px;color:#888;letter-spacing:2px;max-width:400px;line-height:1.7;}
+  .hero-cta{margin-top:40px;display:inline-block;padding:14px 40px;border:1px solid var(--white);color:var(--white);font-size:11px;letter-spacing:4px;text-transform:uppercase;text-decoration:none;transition:all 0.3s;}
+  .hero-cta:hover{background:var(--white);color:var(--black);}
+  section{padding:100px 48px;}
+  .section-label{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--red);margin-bottom:16px;}
+  .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,80px);line-height:1;letter-spacing:2px;margin-bottom:48px;}
+  #historia{background:var(--black);display:flex;align-items:center;}
+  .historia-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;min-height:70vh;}
+  .historia-text p{font-size:15px;line-height:1.9;color:#aaa;margin-bottom:20px;}
+  .historia-img{width:100%;aspect-ratio:867/448;object-fit:cover;filter:grayscale(20%);}
+  #edicoes{background:var(--gray);}
+  .edicoes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
+  .edicao-card{background:var(--black);padding:32px;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden;background-size:cover;background-position:center;}
+  .edicao-card::after{content:'';position:absolute;inset:0;background:rgba(8,8,8,0.82);transition:background 0.3s;z-index:0;}
+  .edicao-card:hover::after{background:rgba(8,8,8,0.72);}
+  .edicao-card>*{position:relative;z-index:1;}
+  .edicao-card::before{content:'';position:absolute;bottom:0;left:0;width:0;height:2px;background:var(--red);transition:width 0.4s;}
+  .edicao-card:hover::before{width:100%;} .edicao-card:hover{background:#111;}
+  .edicao-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:#1f1f1f;line-height:1;}
+  .edicao-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;margin:8px 0;}
+  .edicao-date{font-size:11px;color:var(--text-muted);letter-spacing:2px;}
+  .edicao-lineup{margin-top:20px;font-size:12px;color:#888;line-height:2;}
+  .edicao-fotos-count{margin-top:16px;font-size:10px;letter-spacing:3px;color:var(--red);text-transform:uppercase;display:flex;align-items:center;gap:8px;}
+  .edicao-fotos-count::before{content:'';display:inline-block;width:16px;height:1px;background:var(--red);}
+  #radioshow{background:var(--gray);}
+  .radio-scroll-wrap{position:relative;}
+  .radio-grid{display:flex;gap:16px;overflow-x:auto;padding-bottom:16px;scroll-snap-type:x mandatory;scrollbar-width:none;-ms-overflow-style:none;}
+  .radio-grid::-webkit-scrollbar{display:none;}
+  .radio-card{background:var(--black);overflow:hidden;display:flex;flex-direction:column;flex-shrink:0;width:220px;border-radius:12px;}
+  .radio-embed-wrap{width:100%;aspect-ratio:867/448;overflow:hidden;position:relative;border-radius:12px 12px 0 0;}
+  .radio-embed-wrap iframe{width:100%;height:100%;border:none;display:block;}
+  .radio-info{padding:12px 16px 16px;}
+  .radio-title{font-family:'Bebas Neue',sans-serif;font-size:16px;letter-spacing:2px;margin-bottom:2px;}
+  .radio-sub{font-size:9px;color:var(--text-muted);letter-spacing:2px;text-transform:uppercase;}
+  .radio-play-link{display:inline-flex;align-items:center;gap:8px;margin-top:10px;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--red);text-decoration:none;transition:opacity 0.2s;}
+  .radio-play-link:hover{opacity:0.7;}
+  .radio-scroll-arrows{display:flex;gap:8px;margin-top:20px;align-items:center;}
+  .radio-arrow{width:40px;height:40px;border:1px solid #2a2a2a;background:none;color:#666;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;border-radius:4px;}
+  .radio-arrow:hover{border-color:var(--white);color:var(--white);}
+  .radio-scroll-bar{flex:1;height:1px;background:#1a1a1a;position:relative;margin:0 8px;cursor:pointer;}
+  .radio-scroll-thumb{height:1px;background:var(--red);width:30%;position:absolute;left:0;top:0;transition:width 0.2s;}
+  .radio-cta{margin-top:24px;}
+  .radio-link{display:inline-flex;align-items:center;gap:10px;color:#888;font-size:11px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;border:1px solid #1f1f1f;padding:14px 28px;transition:all 0.3s;}
+  .radio-link:hover{border-color:var(--red);color:var(--white);}
+  .radio-link svg{flex-shrink:0;}
+  #videos{background:var(--black);}
+  .videos-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:24px;}
+  .video-card{background:var(--gray);overflow:hidden;}
+  .video-embed{aspect-ratio:867/448;width:100%;border:none;display:block;}
+  .video-info{padding:20px;}
+  .video-title{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:1px;margin-bottom:8px;}
+  .video-meta{font-size:11px;color:var(--text-muted);letter-spacing:2px;}
+  #djs{background:var(--gray);}
+  .dj-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:2px;}
+  .dj-card{background:var(--black);padding:28px 24px;text-align:center;transition:background 0.3s;}
+  .dj-card:hover{background:#111;}
+  .dj-card.residente .dj-avatar{box-shadow:0 0 0 1px #c8102e55;}
+  .dj-avatar{width:80px;height:80px;border-radius:50%;object-fit:cover;margin:0 auto 16px;display:block;filter:grayscale(40%);transition:filter 0.3s;}
+  .dj-card:hover .dj-avatar{filter:grayscale(0%);}
+  .dj-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;}
+  .dj-role{font-size:10px;letter-spacing:3px;margin-top:4px;color:var(--text-muted);}
+  .dj-role.res{color:var(--red);}
+  .dj-ig{display:inline-flex;align-items:center;justify-content:center;margin-top:8px;color:#555;text-decoration:none;border:1px solid #2a2a2a;padding:6px;transition:all 0.2s;}
+  .dj-ig:hover{color:var(--white);border-color:#666;}
+  .dj-edicoes{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:12px;}
+  .dj-edicoes span{font-size:9px;letter-spacing:2px;color:#444;border:1px solid #1f1f1f;padding:3px 7px;}
+  #contato{background:var(--black);}
+  .contato-inner{max-width:600px;}
+  .contato-inner p{font-size:14px;color:#888;line-height:1.9;margin-bottom:40px;}
+  .contact-links{display:flex;flex-direction:column;gap:16px;}
+  .contact-link{display:flex;align-items:center;gap:16px;padding:20px 28px;border:1px solid #1f1f1f;text-decoration:none;color:var(--white);font-size:13px;letter-spacing:2px;transition:all 0.3s;}
+  .contact-link:hover{border-color:var(--red);padding-left:40px;}
+  .contact-link span{color:var(--red);font-family:'Bebas Neue',sans-serif;font-size:11px;letter-spacing:3px;width:80px;}
+  footer{padding:40px 48px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #1a1a1a;}
+  footer p{font-size:11px;color:var(--text-muted);letter-spacing:2px;}
+  .footer-logo{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:6px;}
+  .footer-logo span{color:var(--red);}
+  .galeria-overlay{display:none;position:fixed;inset:0;z-index:200;background:rgba(0,0,0,0.97);backdrop-filter:blur(4px);flex-direction:column;overflow:hidden;}
+  .galeria-overlay.open{display:flex;}
+  .galeria-header{display:flex;align-items:center;justify-content:space-between;padding:20px 32px;border-bottom:1px solid #1a1a1a;flex-shrink:0;}
+  .galeria-title{font-family:'Bebas Neue',sans-serif;font-size:28px;letter-spacing:3px;}
+  .galeria-subtitle{font-size:11px;color:var(--text-muted);letter-spacing:3px;margin-top:2px;}
+  .galeria-actions{display:flex;gap:12px;align-items:center;}
+  .btn-dl-corner{position:absolute;bottom:12px;right:12px;width:36px;height:36px;background:rgba(8,8,8,0.75);border:1px solid #444;border-radius:2px;display:flex;align-items:center;justify-content:center;color:#ccc;cursor:pointer;transition:all 0.2s;backdrop-filter:blur(4px);z-index:10;}
+  .btn-dl-corner:hover{border-color:var(--white);color:var(--white);background:rgba(8,8,8,0.95);}
+  .btn-dl-corner svg{width:15px;height:15px;stroke:currentColor;fill:none;stroke-width:2;}
+  .btn-x{width:40px;height:40px;border:1px solid #333;background:none;color:#aaa;font-size:18px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
+  .btn-x:hover{border-color:var(--white);color:var(--white);}
+  .galeria-main{flex:1;display:flex;align-items:center;justify-content:center;padding:24px 72px 16px;min-height:0;position:relative;}
+  .galeria-img-wrap{position:relative;display:inline-flex;max-width:100%;max-height:100%;}
+  .galeria-img{max-width:100%;max-height:100%;object-fit:contain;transition:opacity 0.2s;}
+  .galeria-img.fade{opacity:0;}
+  .g-btn{position:absolute;top:50%;transform:translateY(-50%);width:48px;height:48px;border:1px solid #2a2a2a;background:rgba(8,8,8,0.8);color:#aaa;font-size:22px;cursor:pointer;transition:all 0.2s;display:flex;align-items:center;justify-content:center;}
+  .g-btn:hover{border-color:var(--white);color:var(--white);}
+  .g-btn.prev{left:16px;} .g-btn.next{right:16px;}
+  .g-count{position:absolute;bottom:20px;left:50%;transform:translateX(-50%);font-size:10px;letter-spacing:3px;color:var(--text-muted);}
+  .galeria-thumbs{flex-shrink:0;padding:0 32px 24px;display:flex;gap:6px;overflow-x:auto;scrollbar-width:thin;scrollbar-color:#2a2a2a transparent;}
+  .galeria-thumbs::-webkit-scrollbar{height:3px;} .galeria-thumbs::-webkit-scrollbar-thumb{background:#2a2a2a;}
+  .g-thumb{flex-shrink:0;width:72px;height:72px;overflow:hidden;cursor:pointer;border:2px solid transparent;transition:border-color 0.2s,opacity 0.2s;opacity:0.45;}
+  .g-thumb.active{border-color:var(--red);opacity:1;} .g-thumb:hover{opacity:0.8;}
+  .g-thumb img{width:100%;height:100%;object-fit:cover;display:block;}
+
+  .edicao-aniversario{border:1px solid #c8102e44 !important;background:linear-gradient(135deg,#0d0d0d 0%,#110508 100%) !important;}
+  .edicao-aniversario::after{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:linear-gradient(to right,transparent,var(--red),transparent);}
+  .aniv-banner{font-size:9px;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:20px;opacity:0.8;}
+  .fade-up{opacity:0;transform:translateY(30px);transition:opacity 0.7s,transform 0.7s;}
+  .fade-up.visible{opacity:1;transform:translateY(0);}
+  @media(max-width:900px){
+    nav{padding:0 24px;} .nav-links{display:none;} section{padding:80px 24px;}
+    .historia-grid,.edicoes-grid,.videos-grid{grid-template-columns:1fr;}
+    .dj-grid{grid-template-columns:repeat(2,1fr);}
+    footer{flex-direction:column;gap:16px;text-align:center;}
+    .galeria-header{padding:16px 20px;} .galeria-main{padding:16px 56px 12px;}
+    .g-btn.prev{left:4px;} .g-btn.next{right:4px;}
+    .galeria-thumbs{padding:0 20px 20px;} .g-thumb{width:56px;height:56px;}
+  }
+</style>
+</head>
+<body>
+<nav>
+  <a href="#hero" class="nav-logo">DEEP<span>&mdash;</span>DASH</a>
+  <ul class="nav-links">
+    <li><a href="#historia">Hist&oacute;ria</a></li>
+    <li><a href="#ingressos">Ingressos</a></li>
+    <li><a href="#edicoes">Edi&ccedil;&otilde;es</a></li>
+    <li><a href="#radioshow">Radio Show</a></li>
+    <li><a href="#videos">V&iacute;deos</a></li>
+    <li><a href="#djs">DJs</a></li>
+    <li><a href="#contato">Contato</a></li>
+  </ul>
+</nav>
+<section id="hero">
+  <p class="hero-eyebrow">Underground Electronic Music</p>
+  <h1 class="hero-title">DEEP<br>DASH</h1>
+  <p class="hero-sub">Som no centro. House e deep house com curadoria sem atalhos.</p>
+  <a href="#edicoes" class="hero-cta">Ver Edi&ccedil;&otilde;es</a>
+</section>
+
+
+
+<section id="historia">
+  <div class="historia-grid">
+    <div class="historia-text">
+      <p class="section-label">Nossa Hist&oacute;ria</p>
+      <h2 class="section-title">DESDE O<br>COME&Ccedil;O</h2>
+      <p>A Deep Dash nasceu da vontade de criar algo diferente &mdash; festas que respeitam a m&uacute;sica, o artista e quem vem dan&ccedil;ar. Desde a primeira edi&ccedil;&atilde;o, em agosto de 2024 no Rio de Janeiro, buscamos curar experi&ecirc;ncias sonoras que ficam na mem&oacute;ria.</p>
+      <p>N&atilde;o somos s&oacute; uma festa. Somos uma comunidade construída em torno do som underground &mdash; house, techno e tudo que pulsa nas margens. Cada edi&ccedil;&atilde;o &eacute; um cap&iacute;tulo, cada tracklist &eacute; uma declara&ccedil;&atilde;o, cada noite &eacute; &uacute;nica.</p>
+      <p>Em seis edi&ccedil;&otilde;es, passamos por Rio de Janeiro e S&atilde;o Paulo, reunimos artistas que acreditam no mesmo movimento e provamos que d&aacute; pra fazer diferente. Estamos aqui para ficar.</p>
+    </div>
+    <img class="historia-img" src='imagens/img-03-10b145b73e.png' alt="Deep Dash" loading="lazy">
+  </div>
+</section>
+<section id="ingressos" style="min-height:auto;padding:80px 0;">
+  <p class="section-label fade-up">Em Breve</p>
+  <h2 class="section-title fade-up">INGRESSOS</h2>
+  <div class="fade-up" style="margin-top:40px;text-align:center;">
+    <p style="color:var(--text-muted);font-size:12px;letter-spacing:3px;text-transform:uppercase;max-width:480px;margin:0 auto;line-height:2;">
+      Os ingressos para a próxima edição estarão disponíveis em breve.<br>Fique de olho nas nossas redes sociais.
+    </p>
+    <a href="https://www.instagram.com/deepdashmusic/" target="_blank" class="radio-link" style="margin-top:40px;">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
+      Seguir no Instagram
+    </a>
+  </div>
+</section>
+
+
+
+<section id="edicoes">
+  <p class="section-label fade-up">Edi&ccedil;&otilde;es</p>
+  <h2 class="section-title fade-up">TODAS AS<br>EDI&Ccedil;&Otilde;ES</h2>
+  <div class="edicoes-grid">
+    <div class="edicao-card fade-up" onclick="openGaleria(0)"><div class="edicao-num">01</div><div class="edicao-name">DEEP DASH #1</div><div class="edicao-date">17 AGO 2024 &mdash; RIO DE JANEIRO</div><div class="edicao-lineup">Efeeme &middot; Fersa &middot; FONS &middot; L&ecirc; Fernandez &middot; Lucas Marques &middot; Sicotti &middot; Villain Mode &middot; Weski</div><div class="edicao-fotos-count">8 fotos</div></div>
+    <div class="edicao-card fade-up" onclick="openGaleria(1)"><div class="edicao-num">02</div><div class="edicao-name">DEEP DASH #2</div><div class="edicao-date">30 NOV 2024 &mdash; RIO DE JANEIRO</div><div class="edicao-lineup">Fersa &middot; Helciin &middot; L&ecirc; Fernandez &middot; Pacheco &middot; Stenx &middot; Villain Mode &middot; Weski</div><div class="edicao-fotos-count">6 fotos</div></div>
+    <div class="edicao-card fade-up" onclick="openGaleria(2)"><div class="edicao-num">03</div><div class="edicao-name">DEEP DASH #3</div><div class="edicao-date">29 MAR 2025 &mdash; S&Atilde;O PAULO</div><div class="edicao-lineup">Efeeme &middot; Fersa &middot; L&ecirc; Fernandez &middot; Sobbar &middot; Villain Mode &middot; Weski</div><div class="edicao-fotos-count">7 fotos</div></div>
+    <div class="edicao-card fade-up" onclick="openGaleria(3)"><div class="edicao-num">04</div><div class="edicao-name">DEEP DASH #4</div><div class="edicao-date">17 MAI 2025 &mdash; S&Atilde;O PAULO</div><div class="edicao-lineup">Fersa &middot; Fili Donato &middot; L&ecirc; Fernandez &middot; Sicotti &middot; Sobbar &middot; Weski</div><div class="edicao-fotos-count">9 fotos</div></div>
+    <div class="edicao-card fade-up edicao-aniversario" onclick="openGaleria(4)">
+  <div class="aniv-banner">&#9733; 1 ANO DE DEEP DASH &#9733;</div>
+  <div class="edicao-num">05</div>
+  <div class="edicao-name">DEEP DASH #5</div>
+  <div class="edicao-date">23 AGO 2025 &mdash; S&Atilde;O PAULO</div>
+  <div class="edicao-lineup">Fersa &middot; L&ecirc; Fernandez &middot; Lucas Marques &middot; Villain Mode &middot; Weski</div>
+  <div class="edicao-fotos-count">8 fotos</div>
+</div>
+    <div class="edicao-card fade-up" onclick="openGaleria(5)" style="background-image:url('https://lh3.googleusercontent.com/d/1Oqqt8DbZYiwRsAMWJRob-q8l_UCmUr-z');"><div class="edicao-num">06</div><div class="edicao-name">DEEP DASH #6</div><div class="edicao-date">06 MAR 2026 &mdash; S&Atilde;O PAULO</div><div class="edicao-lineup">Bauhouse &middot; Fersa &middot; Fit &middot; L&ecirc; Fernandez &middot; Weski</div><div class="edicao-fotos-count">208 fotos</div></div>
+    <div class="edicao-card fade-up" style="border:1px dashed #333;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:180px;cursor:default;"><div class="edicao-name" style="color:#444;">EM BREVE</div><div class="edicao-date" style="margin-top:8px;">PR&Oacute;XIMA EDI&Ccedil;&Atilde;O</div></div>
+  </div>
+</section>
+<section id="radioshow">
+  <p class="section-label fade-up">Ouça</p>
+  <h2 class="section-title fade-up">RADIO SHOW</h2>
+  <div class="radio-scroll-wrap">
+  <div class="radio-grid fade-up" id="radioGrid">
+    <div class="radio-card">
+      <div class="radio-embed-wrap">
+        <iframe scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https://soundcloud.com/deepdashmusic/le-fernandez-deep-dash-1-year-230825&color=%23c8102e&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=true"></iframe>
+      </div>
+      <div class="radio-info">
+        <div class="radio-title">Lê Fernandez</div>
+        <div class="radio-sub">Deep Dash 1 Year · 23.08.25</div>
+        <a href="https://soundcloud.com/deepdashmusic/le-fernandez-deep-dash-1-year-230825" target="_blank" class="radio-play-link">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><polygon points="5,3 19,12 5,21"/></svg>
+          Ouvir no SoundCloud
+        </a>
+      </div>
+    </div>
+    <div class="radio-card">
+      <div class="radio-embed-wrap">
+        <iframe scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https://soundcloud.com/deepdashmusic/fersa-deep-dash-1-year-230825&color=%23c8102e&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=true"></iframe>
+      </div>
+      <div class="radio-info">
+        <div class="radio-title">Fersa</div>
+        <div class="radio-sub">Deep Dash 1 Year · 23.08.25</div>
+        <a href="https://soundcloud.com/deepdashmusic/fersa-deep-dash-1-year-230825" target="_blank" class="radio-play-link">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><polygon points="5,3 19,12 5,21"/></svg>
+          Ouvir no SoundCloud
+        </a>
+      </div>
+    </div>
+    <div class="radio-card">
+      <div class="radio-embed-wrap">
+        <iframe scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https://soundcloud.com/deepdashmusic/weski-deep-dash-1-year-230825&color=%23c8102e&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=true"></iframe>
+      </div>
+      <div class="radio-info">
+        <div class="radio-title">Weski</div>
+        <div class="radio-sub">Deep Dash 1 Year · 23.08.25</div>
+        <a href="https://soundcloud.com/deepdashmusic/weski-deep-dash-1-year-230825" target="_blank" class="radio-play-link">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><polygon points="5,3 19,12 5,21"/></svg>
+          Ouvir no SoundCloud
+        </a>
+      </div>
+    </div>
+    <div class="radio-card">
+      <div class="radio-embed-wrap">
+        <iframe scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https://soundcloud.com/deepdashmusic/villain-mode-deep-dash-1-year-230825&color=%23c8102e&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=true"></iframe>
+      </div>
+      <div class="radio-info">
+        <div class="radio-title">Villain Mode</div>
+        <div class="radio-sub">Deep Dash 1 Year · 23.08.25</div>
+        <a href="https://soundcloud.com/deepdashmusic/villain-mode-deep-dash-1-year-230825" target="_blank" class="radio-play-link">
+          <svg viewBox="0 0 24 24" fill="currentColor" width="10" height="10"><polygon points="5,3 19,12 5,21"/></svg>
+          Ouvir no SoundCloud
+        </a>
+      </div>
+    </div>
+  </div>
+  <div class="radio-scroll-arrows fade-up">
+    <button class="radio-arrow" onclick="scrollRadio(-1)">&#x2039;</button>
+    <div class="radio-scroll-bar" id="radioScrollBar" onclick="scrollRadioBar(event)">
+      <div class="radio-scroll-thumb" id="radioScrollThumb"></div>
+    </div>
+    <button class="radio-arrow" onclick="scrollRadio(1)">&#x203a;</button>
+  </div>
+  </div>
+  <div class="radio-cta fade-up">
+    <a href="https://soundcloud.com/deepdashmusic" target="_blank" class="radio-link">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
+      Ouvir todos os sets no SoundCloud
+    </a>
+  </div>
+</section>
+
+<section id="videos">
+  <p class="section-label fade-up">Conte&uacute;do</p>
+  <h2 class="section-title fade-up">V&Iacute;DEOS</h2>
+  <div class="videos-grid">
+    <div class="video-card fade-up"><iframe class="video-embed" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe><div class="video-info"><div class="video-title">DEEP DASH #5 &mdash; AFTERMOVIE</div><div class="video-meta">ABR 2024 &middot; 12 MIN</div></div></div>
+    <div class="video-card fade-up"><iframe class="video-embed" src="https://www.youtube.com/embed/dQw4w9WgXcQ" allowfullscreen></iframe><div class="video-info"><div class="video-title">DEEP DASH #4 &mdash; LIVE SET</div><div class="video-meta">NOV 2023 &middot; 45 MIN</div></div></div>
+  </div>
+</section>
+<section id="djs">
+  <p class="section-label fade-up">Artistas</p>
+  <h2 class="section-title fade-up">DJS</h2>
+  <div class="dj-grid fade-up">
+    <div class="dj-card residente"><img class="dj-avatar" src="imagens/img-04-45599d2a99.jpg" alt="Fersa" loading="lazy"><div class="dj-name">Fersa</div><div class="dj-role res">Residente</div><a href="https://www.instagram.com/fersamusic/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+    <div class="dj-card residente"><img class="dj-avatar" src="imagens/img-05-1c5e5bed40.jpg" alt="Le Fernandez" loading="lazy"><div class="dj-name">L&ecirc; Fernandez</div><div class="dj-role res">Residente</div><a href="https://www.instagram.com/djlefernandez/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+    <div class="dj-card residente"><img class="dj-avatar" src="imagens/img-06-d38c3644eb.jpg" alt="Weski" loading="lazy"><div class="dj-name">Weski</div><div class="dj-role res">Residente</div><a href="https://www.instagram.com/weskimusic/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+    <div class="dj-card"><img class="dj-avatar" src="imagens/img-07-f0f277c197.jpg" alt="Bauhouse" loading="lazy"><div class="dj-name">Bauhouse</div><div class="dj-role ">Convidado</div><div class="dj-edicoes"><span>DD#6</span></div><a href="https://www.instagram.com/bauhousemusic/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+    <div class="dj-card"><img class="dj-avatar" src="imagens/img-08-521677b53b.jpg" alt="Efeeme" loading="lazy"><div class="dj-name">Efeeme</div><div class="dj-role ">Convidado</div><div class="dj-edicoes"><span>DD#1</span><span>DD#3</span></div><a href="https://www.instagram.com/efeeme.music/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+    <div class="dj-card"><img class="dj-avatar" src="imagens/img-09-aeedcc762e.jpg" alt="Fili Donato" loading="lazy"><div class="dj-name">Fili Donato</div><div class="dj-role ">Convidado</div><div class="dj-edicoes"><span>DD#4</span></div><a href="https://www.instagram.com/filidonato/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+    <div class="dj-card"><img class="dj-avatar" src="imagens/img-10-cca82eb3cd.jpg" alt="Fit" loading="lazy"><div class="dj-name">Fit</div><div class="dj-role ">Convidado</div><div class="dj-edicoes"><span>DD#6</span></div><a href="https://www.instagram.com/felipe.djfit/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+    <div class="dj-card"><img class="dj-avatar" src="imagens/img-11-8efee6f835.jpg" alt="FONS" loading="lazy"><div class="dj-name">FONS</div><div class="dj-role ">Convidado</div><div class="dj-edicoes"><span>DD#1</span></div><a href="https://www.instagram.com/fons.oficial/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+    <div class="dj-card"><img class="dj-avatar" src="imagens/img-12-392a073c09.jpg" alt="Lucas Marques" loading="lazy"><div class="dj-name">Lucas Marques</div><div class="dj-role ">Convidado</div><div class="dj-edicoes"><span>DD#1</span><span>DD#5</span></div><a href="https://www.instagram.com/lucasmarqso/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+    <div class="dj-card"><img class="dj-avatar" src="imagens/img-13-50f5e1bf18.jpg" alt="Pacheco" loading="lazy"><div class="dj-name">Pacheco</div><div class="dj-role ">Convidado</div><div class="dj-edicoes"><span>DD#2</span></div><a href="https://www.instagram.com/pacheco.music/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+    <div class="dj-card"><img class="dj-avatar" src="imagens/img-14-8f1cfa73cc.png" alt="Sicotti" loading="lazy"><div class="dj-name">Sicotti</div><div class="dj-role ">Convidado</div><div class="dj-edicoes"><span>DD#1</span><span>DD#4</span></div><a href="https://www.instagram.com/jeffersonsicotti/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+    <div class="dj-card"><img class="dj-avatar" src="imagens/img-15-6c5d7b4b64.jpg" alt="Stenx" loading="lazy"><div class="dj-name">Stenx</div><div class="dj-role ">Convidado</div><div class="dj-edicoes"><span>DD#2</span></div><a href="https://www.instagram.com/_stenx/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+    <div class="dj-card"><img class="dj-avatar" src="imagens/img-16-1f7b666d00.png" alt="Villain Mode" loading="lazy"><div class="dj-name">Villain Mode</div><div class="dj-role ">Convidado</div><div class="dj-edicoes"><span>DD#1</span><span>DD#2</span><span>DD#3</span><span>DD#5</span></div><a href="https://www.instagram.com/villain_mode/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
+  </div>
+</section>
+
+<section id="contato">
+  <p class="section-label fade-up">Contato</p>
+  <h2 class="section-title fade-up">FALE COM<br>A GENTE</h2>
+  <div class="contato-inner fade-up">
+    <p>Para bookings, parcerias ou qualquer d&uacute;vida, entre em contato pelos canais abaixo.</p>
+    <div class="contact-links">
+      <a href="/cdn-cgi/l/email-protection#80e3efeef4e1f4efc0e4e5e5f0e4e1f3e8aee3efedaee2f2" class="contact-link"><span>Email</span><span class="__cf_email__" data-cfemail="fb9894958f9a8f94bb9f9e9e8b9f9a8893d5989496d59989">[email&#160;protected]</span></a>
+      <a href="https://www.instagram.com/deepdashmusic/" target="_blank" class="contact-link"><span>Instagram</span>@deepdash</a>
+      <a href="https://youtube.com/@deepdash" target="_blank" class="contact-link"><span>YouTube</span>Deep Dash</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-logo">DEEP<span>&mdash;</span>DASH</div>
+  <p>&copy; 2024 Deep Dash. S&atilde;o Paulo.</p>
+</footer>
+
+<div class="galeria-overlay" id="galeriaOverlay">
+  <div class="galeria-header">
+    <div><div class="galeria-title" id="galeriaTitle"></div><div class="galeria-subtitle" id="galeriaSubtitle"></div></div>
+    <div class="galeria-actions">
+      <button class="btn-x" onclick="closeGaleria()">&#x2715;</button>
+    </div>
+  </div>
+  <div class="galeria-main">
+    <button class="g-btn prev" onclick="navGaleria(-1)">&#x2039;</button>
+    <div class="galeria-img-wrap">
+      <img class="galeria-img" id="galeriaImg" src="" alt="" loading="lazy">
+      <button onclick="downloadFoto()" class="btn-dl-corner" title="Download">
+        <svg viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+      </button>
+    </div>
+    <button class="g-btn next" onclick="navGaleria(1)">&#x203a;</button>
+    <div class="g-count" id="galeriaCount"></div>
+  </div>
+  <div class="galeria-thumbs" id="galeriaThumbs"></div>
+</div>
+
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+var edicoes=[{title:"DEEP DASH #1",sub:"17 AGO 2024 - RIO DE JANEIRO",f:['https://images.pexels.com/photos/1763067/pexels-photo-1763067.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/167636/pexels-photo-167636.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/2111015/pexels-photo-2111015.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1540406/pexels-photo-1540406.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/3628100/pexels-photo-3628100.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=1200']},{title:"DEEP DASH #2",sub:"30 NOV 2024 - RIO DE JANEIRO",f:['https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/2111015/pexels-photo-2111015.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1540406/pexels-photo-1540406.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/3628100/pexels-photo-3628100.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1763067/pexels-photo-1763067.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/167636/pexels-photo-167636.jpeg?auto=compress&cs=tinysrgb&w=1200']},{title:"DEEP DASH #3",sub:"29 MAR 2025 - SAO PAULO",f:['https://images.pexels.com/photos/167636/pexels-photo-167636.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/2111015/pexels-photo-2111015.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1540406/pexels-photo-1540406.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/3628100/pexels-photo-3628100.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1763067/pexels-photo-1763067.jpeg?auto=compress&cs=tinysrgb&w=1200']},{title:"DEEP DASH #4",sub:"17 MAI 2025 - SAO PAULO",f:['https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/2111015/pexels-photo-2111015.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1540406/pexels-photo-1540406.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/3628100/pexels-photo-3628100.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1763067/pexels-photo-1763067.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/167636/pexels-photo-167636.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&w=1200']},{title:"DEEP DASH #5",sub:"23 AGO 2025 - SAO PAULO",f:['https://images.pexels.com/photos/1540406/pexels-photo-1540406.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/3628100/pexels-photo-3628100.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1105666/pexels-photo-1105666.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1763067/pexels-photo-1763067.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/167636/pexels-photo-167636.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/2747449/pexels-photo-2747449.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/1190297/pexels-photo-1190297.jpeg?auto=compress&cs=tinysrgb&w=1200','https://images.pexels.com/photos/2111015/pexels-photo-2111015.jpeg?auto=compress&cs=tinysrgb&w=1200']},{title:"DEEP DASH #6",sub:"06 MAR 2026 - SAO PAULO",f:['https://lh3.googleusercontent.com/d/1Oqqt8DbZYiwRsAMWJRob-q8l_UCmUr-z','https://lh3.googleusercontent.com/d/1BgnDcI7JD2YONG_a2XCwbb45P_YI8Jxo','https://lh3.googleusercontent.com/d/1E5z3qIoNJe8YH3_kR5P1zjKMXMC_nlZh','https://lh3.googleusercontent.com/d/16TwjjuznxLEB75Dkpcu2eTYPEnhVYxm0','https://lh3.googleusercontent.com/d/1bmyOIWez2c4D_3mW9goiYhyGzPTHoJa-','https://lh3.googleusercontent.com/d/1d9qGyy8Lq9--V3Rv4hEhgx_d0MQxoEE1','https://lh3.googleusercontent.com/d/1ohR_QhQIjgXis4QaXw1-sc5YCpsbVqsA','https://lh3.googleusercontent.com/d/1nwYBx3VhDtjjPIj1PFhOtfmRtqmPu3Nj','https://lh3.googleusercontent.com/d/1KU93vuFOHoDJMvRzbcq7ACgTzBLTaCC1','https://lh3.googleusercontent.com/d/1lAYHUx-JLHGBUfbL7_4T-DFN17TTk_K_','https://lh3.googleusercontent.com/d/1Pljp4Uu0c9sPv2v7PzInhx3MNe3TUsdT','https://lh3.googleusercontent.com/d/195lnlgj1xZCEf86BC4fFJx6iw80R2f-B','https://lh3.googleusercontent.com/d/1jCJvj48i94guuoBvsOt6_oavAUXsGZim','https://lh3.googleusercontent.com/d/1IarE7-J9scWKWsQcLsCIrz8sxPIyMkSU','https://lh3.googleusercontent.com/d/1HSSNEAF7MzMiA86KZcOQqjuUAMqSkqPn','https://lh3.googleusercontent.com/d/1kimlKR85akjvpuHe4wpVxVachyhrrj3j','https://lh3.googleusercontent.com/d/1l1r-V6kEd2M7siZVmVkTfkniTtjdz9WZ','https://lh3.googleusercontent.com/d/15lLZoX_EvfyKucMWkqDitvBiVhowTLeX','https://lh3.googleusercontent.com/d/1ye0hdy-t2jZbQhsSxmxWssww09TZHT6T','https://lh3.googleusercontent.com/d/1qwsTRWIFJ2BxFM4dayHUXSKYScOxTaXw','https://lh3.googleusercontent.com/d/15e-r73fJlcAknqJgOtfvPjf6IuNhyqcZ','https://lh3.googleusercontent.com/d/10XODPVeqAdybovFAiihTTyG8YYW804DW','https://lh3.googleusercontent.com/d/1HXGXPSLdtatC4bqF1zf7ng87eTPCwOiR','https://lh3.googleusercontent.com/d/1wMJSa9YpBu9IphJoNehi1E6wZYyntfUD','https://lh3.googleusercontent.com/d/1OyrMLidwQD8zZzyRmvEPDvL8e41Mhkah','https://lh3.googleusercontent.com/d/1wfoW2Zd40jSS7Sj-nmNgPRLMujFeOtE_','https://lh3.googleusercontent.com/d/1W4dnyNcU236pdkLAneNl3_6Ls7e1PirN','https://lh3.googleusercontent.com/d/1tXhFQyGtmamtzbnUUkHNiqL5IMjS9EXQ','https://lh3.googleusercontent.com/d/1Ak-L14Bs7-7uRTcfE9s_C9YqnI5lm1Gn','https://lh3.googleusercontent.com/d/1yPw3viJEkdqJ6ztetaIDqMIajYAnrEZl','https://lh3.googleusercontent.com/d/1RBY8dEOAt_EqwIDdgygq4FKRWuevamlT','https://lh3.googleusercontent.com/d/1wTX01Z5VJ9tkfZZhvw2ubmerKEqrIt9S','https://lh3.googleusercontent.com/d/1at2AqwAP8m_uPgKChP82mKPnBaaw20Ft','https://lh3.googleusercontent.com/d/1fvaJe6fhi_pMe5ko0pDFk2nGULQpeveU','https://lh3.googleusercontent.com/d/1JZySoCqDXyCqCPklaQlf-XQEXEQRz-5y','https://lh3.googleusercontent.com/d/10KGX-efk9zM7vTBIQzjvJXYQFstSr10Y','https://lh3.googleusercontent.com/d/1gv_S_1qAe4lQe_rNlDt9IMplkOUUNvlQ','https://lh3.googleusercontent.com/d/1AiXCp0ru0GyZnYbzFRGEAgxDPuSjOdEV','https://lh3.googleusercontent.com/d/1FCcrIUTb_Yv1Gg_ZVhsbCruWgwOzotaW','https://lh3.googleusercontent.com/d/1WpWhgooukFkmE-hVqbPZiSzLFJTHNLjT','https://lh3.googleusercontent.com/d/1Hm9-Ndx5guzFw4mu2m5jrdzlFF9NJKqG','https://lh3.googleusercontent.com/d/1vumZvgJWSfUc_5ztylQO0vNJdd2a3Ewj','https://lh3.googleusercontent.com/d/1E496KFueV6s1CEoHLqf1ifDJHdPkdFsk','https://lh3.googleusercontent.com/d/1LPGBMAYuF_PnkCH3JShSCy0CEvftf41g','https://lh3.googleusercontent.com/d/1cKrgvFwsrA0SM7qhuZFS8EBmIqxJJ0oB','https://lh3.googleusercontent.com/d/1R-FlNtx6F6XrPOMFlPprOMvdzjAC77vt','https://lh3.googleusercontent.com/d/13ivlCW0uNXXfajm4g6npBY0NAN8mQzm9','https://lh3.googleusercontent.com/d/10nnvBVHY9rM4WNc6uMQtnCG4-2wmmD6X','https://lh3.googleusercontent.com/d/1whZtUSOSFxSGOYjA8kIXqjZEgah-fmm7','https://lh3.googleusercontent.com/d/1nPiaLtnKqD3We8nPSzzlX3pU3et_2vvR','https://lh3.googleusercontent.com/d/1fSc9H-upTYkzjki3rlcvv3k8ygRQGNiN','https://lh3.googleusercontent.com/d/1tlGAA6Pm13PuWk2GT4fEDZ7C-LnMomR9','https://lh3.googleusercontent.com/d/13E8C2rxGRh-Ilw5x4_tcsIbvrVm0UlW5','https://lh3.googleusercontent.com/d/11K-gt2SxCLnET7UA3jDl8C9Z_eQROFEF','https://lh3.googleusercontent.com/d/1cqXRDz8KxHAVr1B7B-YYNyPAvVqQFszI','https://lh3.googleusercontent.com/d/1gRJDchtUmOF7hGhZalhYGqYA19eyLhpq','https://lh3.googleusercontent.com/d/1-bopTszu4uj7zdn6Jhi1-JDgMxhkGvhH','https://lh3.googleusercontent.com/d/1CM3qOnyv3etamLGqOWe2v2baoC4xFrXn','https://lh3.googleusercontent.com/d/10-ddcIn2vIckVkA8rGm8DQjyVikhSRZx','https://lh3.googleusercontent.com/d/1D1L-VSMozjZyGUT2SHIIstwEv1hkIYzv','https://lh3.googleusercontent.com/d/10kORlQcCiIKA84CggAe9k53GB6dC9uiS','https://lh3.googleusercontent.com/d/1Tb5w7VLbjosVMOKdxTpp5DCckK1VYOLm','https://lh3.googleusercontent.com/d/1d_agquMnF4B-56Df9D_BLqmVmF88I8GY','https://lh3.googleusercontent.com/d/1FWgqzcFuEIlcI1v2iyUQilSmp1Fa1vqX','https://lh3.googleusercontent.com/d/1_OWJ2imn-kHI04ZsmCb7Ct8lQOqN8EGq','https://lh3.googleusercontent.com/d/1-J6OK2g4LmBAX9gzamhiKSk5Q4dIVWn4','https://lh3.googleusercontent.com/d/1DxHKEl6Ps6ztP7QOL0As2HUHAuIFVCmZ','https://lh3.googleusercontent.com/d/1NQG9txcr3wsrsg2c-tuPt2ozt2LJfdRA','https://lh3.googleusercontent.com/d/1l8mfRPRV4hTWjlz-G-qfGQmxYFEvT_iq','https://lh3.googleusercontent.com/d/1ZGPhcrKsvLC2BYRlbg7d2loLXVMunN8L','https://lh3.googleusercontent.com/d/1mYrY_OKqaADeTmP58R2-zJM7TwYGwkVg','https://lh3.googleusercontent.com/d/1ckTu4AEOQFw42eNb1oXpQZNlCFcajR4G','https://lh3.googleusercontent.com/d/1pE7_5pv1_mHd3ippzGgnxbhq_jSfvD9O','https://lh3.googleusercontent.com/d/1n8c33TXzTlr0K_sbU8RAknpta7Zh94Gp','https://lh3.googleusercontent.com/d/1ca3WGOekZjXiPeiOpNkotCR6LUkXqdUN','https://lh3.googleusercontent.com/d/1ewVdSlu-OKYD3DX242D_OxvbSMG_PYJ_','https://lh3.googleusercontent.com/d/1bT6liW8ekaZmZE00ZgIt_FfLUKDfzH6m','https://lh3.googleusercontent.com/d/1zAkYpZagatrUezRzZNcZI9SBWyLKgIZa','https://lh3.googleusercontent.com/d/1ZZYuyys5OwG0duAghn7iYeKDP9Mw8_Lr','https://lh3.googleusercontent.com/d/1tePy0hlZPNkGTYgrFznIzFP-wTyoxJdJ','https://lh3.googleusercontent.com/d/1bH2TM6anbIggD_GEn4oO2qXg7shgBBT6','https://lh3.googleusercontent.com/d/1qAQDyTHwGu0w26fj2snOkkgmfGzlAi18','https://lh3.googleusercontent.com/d/1r9RoEkDJcoN7RIXwMWROnxPrTseu3h9Z','https://lh3.googleusercontent.com/d/17hKHfzPyJX3LZfQWfACGzmE3_xpcSC5a','https://lh3.googleusercontent.com/d/1zQUbID0p2644DzhMo9J1a7pZXXWH11CU','https://lh3.googleusercontent.com/d/1sdPh60czfFz2PfjuRomJ1bMQcRP9DhWG','https://lh3.googleusercontent.com/d/1oVIvosKvJUwK1SWJzFf9YBOVtYt0cutK','https://lh3.googleusercontent.com/d/1XcZ8P7_ShvEsaXBCbQwrjpte_M8QWme2','https://lh3.googleusercontent.com/d/1C9Fq8H5OA5i7gAZsrVBmQhNKHIALakhD','https://lh3.googleusercontent.com/d/1ZfA86zS54E7YvzM5__zxihUaw0m9W9V2','https://lh3.googleusercontent.com/d/1ld03N7b6wrN0N3dRGAQ35i04s2pFfSkb','https://lh3.googleusercontent.com/d/1FXMFNECDFIE8w6vkdnUyKj-VtavWOv6T','https://lh3.googleusercontent.com/d/1V_sw9zYWFNStwjlOCbIbvTMohUYUgTdp','https://lh3.googleusercontent.com/d/1r7RwinXNetr6tKqwGZyGGXMaB-yXGd34','https://lh3.googleusercontent.com/d/1Us8lYHeIceNEW0YRhOs2aL3wjVa9VApT','https://lh3.googleusercontent.com/d/172RD_zJmW4axsjbkbCEGeW2WRtL84EiX','https://lh3.googleusercontent.com/d/1VuUt1esdiG2adIOBMo5ZOrzv_5LP_vYK','https://lh3.googleusercontent.com/d/1Sj0BPXzxxPDSahvyAytflzhlXABybnvA','https://lh3.googleusercontent.com/d/1qCCVDSRzuAjL7FdavsdmYUzs7QyEsVGb','https://lh3.googleusercontent.com/d/1RKifLcqMicJURRQOMSXsGHAbtwwW-jjS','https://lh3.googleusercontent.com/d/1gN1fPCdzyRPjDlGO1k9XJu0zt5YCssMx','https://lh3.googleusercontent.com/d/1WmRXa6DapvV2d4G29Ap4WcQZHYwQ1WNR','https://lh3.googleusercontent.com/d/1MNga8I5igvaFl3oe9CtY4Vlhm0XoqZaU','https://lh3.googleusercontent.com/d/10uwIEafNJzGP_igebZIuby_QGsjhScfK','https://lh3.googleusercontent.com/d/10giHU585At2Vy0v1IbdLC8jV2y3L5bJQ','https://lh3.googleusercontent.com/d/1wgvY_8hXL0mtiKhI_tBvgd1cIkVIvAnd','https://lh3.googleusercontent.com/d/1DBtIF-SVRUwswcNZr_x4NA_2W0ZTRWzY','https://lh3.googleusercontent.com/d/1NE2qqXAfCgzxDZHrUJps7tk8i-wzqA6z','https://lh3.googleusercontent.com/d/1LgZ96Z0-Z44jjN_D65IyPu0IdIyZBRu6','https://lh3.googleusercontent.com/d/1Ga1e6s2uuMqdCvSYBhWnBZpioUU5bpaI','https://lh3.googleusercontent.com/d/1XPbXftGjAvJ9Mm9W6mXDibogOU6kJr0e','https://lh3.googleusercontent.com/d/1JODOswQAR0tv1nWhcvk_Pzd_aFGIWvly','https://lh3.googleusercontent.com/d/1YwUSU_iSgB1im2s486f9-I1yMziHE_Rk','https://lh3.googleusercontent.com/d/1GDZyaAhXu_6LQeo2_vp9M9Pd2u0-J8eK','https://lh3.googleusercontent.com/d/1U-YXDmsNsLDTEDrqhVBAy4nklPyPFny_','https://lh3.googleusercontent.com/d/109rPuANpGs2zfb_5AdSKKkEjOOV48Feu','https://lh3.googleusercontent.com/d/1x46N1Puv58swMJWYpFgy9M8wgMFoTsL1','https://lh3.googleusercontent.com/d/1BbN_aJIO8LBsEhjkEAoMjUhtzBKkRm1n','https://lh3.googleusercontent.com/d/1QxJXD3xNor-AqA3J-2qBag7M6m0fS1RT','https://lh3.googleusercontent.com/d/1wlNDfIMr9nM4ad0d8H04PfdASlk1YcFi','https://lh3.googleusercontent.com/d/1ktw6ehgQUcM51f34gTRrUDvFrH5TDaSb','https://lh3.googleusercontent.com/d/1r4SHjzIC49CpIkKVrep1c9EUQ3ZHCabJ','https://lh3.googleusercontent.com/d/1IHJd28_md4_xbYHwS1xVuP3gfS2TRcJ8','https://lh3.googleusercontent.com/d/1i-xUKzZltHyeDIWkub82wLLUGkwZU4IE','https://lh3.googleusercontent.com/d/1g6ov7KS743JxGLYuwTRFbJ5V6J_IEQHv','https://lh3.googleusercontent.com/d/1aMcMaS6Lbm3luUmrHaOi61WkAP_U1m65','https://lh3.googleusercontent.com/d/1tOC2l9Jba6oammlVuK4Xk2z1iDhhMuTH','https://lh3.googleusercontent.com/d/1pU0MwXXfXz8kErwsCHDYqxs22Dj5saXR','https://lh3.googleusercontent.com/d/1RqffA8pgPz7M4oRzJH2y58ufm91b50NF','https://lh3.googleusercontent.com/d/1ycBKZlNZkv9li6xBO0-BZGW82G5ZPKf0','https://lh3.googleusercontent.com/d/1JDwH0tuAeKTLND_SNqyWVWWG9IlAApNQ','https://lh3.googleusercontent.com/d/1Y9ikflD4LFp42aKwzbL2JW528eM45mfn','https://lh3.googleusercontent.com/d/1SXb_IlblK_5V809qQknPC3A9fk-HsQdy','https://lh3.googleusercontent.com/d/10R0ugID4HIYQt29BzF4zk6mVfDktawrc','https://lh3.googleusercontent.com/d/1yw67uMlYxsrMIV7vaJnYKozIo1Jx62P2','https://lh3.googleusercontent.com/d/1F6o4OyuowNtkLRfb9_GhjCvCuiLhQZAM','https://lh3.googleusercontent.com/d/1sJkPEOnynoLoV2MEc9ilp7RBzNKymVsv','https://lh3.googleusercontent.com/d/1Y0-xsJCqo3tZWdwHreBWZq3CoYkSgQmL','https://lh3.googleusercontent.com/d/1ZTLzqY_THlpOUxs3-Q0qJqD3h9LNlEyT','https://lh3.googleusercontent.com/d/1o0p2iK_9eyxea7jcfL-msbzRKjBY9EfR','https://lh3.googleusercontent.com/d/1s40Jags0YFmRzrG3PUAokT3hw7oUz3f9','https://lh3.googleusercontent.com/d/1DPdZjLc6bl0QnKELMhRA6uu65o2VYdnL','https://lh3.googleusercontent.com/d/1V1zuz0S_9TeAjRHGp3Yib-2dz_nS6qCn','https://lh3.googleusercontent.com/d/1USwrW5cRx7hJK9_mZIcUYNdor_zv7ais','https://lh3.googleusercontent.com/d/14KSAiJxLPAvCrvMhtBFCDs9ObtSNXuNZ','https://lh3.googleusercontent.com/d/14LPlMFxDT2TFEHI2l3VAn6W2Fa4yZu2b','https://lh3.googleusercontent.com/d/1wn3ViXnLoDXGET-nCNVpqFgOkOTq1UTB','https://lh3.googleusercontent.com/d/1fmISPlYLVGM_BQK0LNfq8Hq6-3kTGvdf','https://lh3.googleusercontent.com/d/1JHDJL5rmDZct1-B9RWxOyzCyvPN1LzSl','https://lh3.googleusercontent.com/d/1fp9kaOOauEyByt0XCIprc4DaM4euucwF','https://lh3.googleusercontent.com/d/1cWgpX0lXuA1lxgfNwrAv1hG9nx1lMytH','https://lh3.googleusercontent.com/d/1Dc3Vt6F_KBJ0bKLg0VvnFhADqkY9LL9s','https://lh3.googleusercontent.com/d/1TttBjB2iLtL2XJaNEx3Hl8QXeeZZZapG','https://lh3.googleusercontent.com/d/1BON8_iryeqWZJmFPkPp3Xl4Up_rV8NDe','https://lh3.googleusercontent.com/d/1ZOGtWdZSSXKqK8tfhGPtRa-Q7DA9dfI8','https://lh3.googleusercontent.com/d/10vT1gI8smJZbSloCb-4rsyDKwB1mAOv9','https://lh3.googleusercontent.com/d/1vKpgs65ljJWUelAmDUkQjVyf-RcTdJJZ','https://lh3.googleusercontent.com/d/1D1QiVl8xdIlBHyAJsHpvM_VoLFnuq_xR','https://lh3.googleusercontent.com/d/1p_eQq5KQcS6leNyUkqDSN_nxTE6Yz9db','https://lh3.googleusercontent.com/d/18tVih8LfchgXun0ZI6ZMBIEhlzleHdld','https://lh3.googleusercontent.com/d/19Ql7fcotOoIKY8GCQ9XeYAXGxkZk3oWO','https://lh3.googleusercontent.com/d/1q9UVRz91Xh_OlD-DYTMFGy_ePSVcjPTH','https://lh3.googleusercontent.com/d/1P61rGzGKuwEGtPJLIQpVm5KIACGxrll9','https://lh3.googleusercontent.com/d/18cCoNhu2ADC0v7F-aDIYTFTH3o0ReYcF','https://lh3.googleusercontent.com/d/1ivv5-3_6IFG3qEZh6-xPYaqk_EkdNtXD','https://lh3.googleusercontent.com/d/1V9IMNF9Z73ahBaiF7bxrVrixDL77rwoq','https://lh3.googleusercontent.com/d/1vvYsrDoAu9NqjrNZMiDjwSQdGiw6IWp9','https://lh3.googleusercontent.com/d/1zVnei2LMs34VK9kve4KLDFsFcsnpqLiE','https://lh3.googleusercontent.com/d/1vdwND6Bd5w8FW0sAo-f_RUbtcpRsH7Ym','https://lh3.googleusercontent.com/d/1tFJgcvRXardQPU6mVAuEOSJHmD7hdM7l','https://lh3.googleusercontent.com/d/1SQNCOGfPmbnoi7oYVqOsN2FjJkutgrqH','https://lh3.googleusercontent.com/d/1kxhi7F31h4usuJdJrvj1BH7kDtSGxuYT','https://lh3.googleusercontent.com/d/1XhdEIYoaYLblaNV1iavW8ht3H4U88alo','https://lh3.googleusercontent.com/d/1sH7UlPxyJlx1EE-rkBOOOVXbIRF0vhw9','https://lh3.googleusercontent.com/d/1fFq7ufVDqDJ-w_lOsQeCVmhTMFHEbWI9','https://lh3.googleusercontent.com/d/10AtPixq8SW3REKZrbKkNCUhr2o4lwv1x','https://lh3.googleusercontent.com/d/1911OM6E3T0j-aAmAd6fT3xI4MXAhx7YT','https://lh3.googleusercontent.com/d/1samKgdR81RpOOszqWocGDz3XTe8N7bWM','https://lh3.googleusercontent.com/d/1hTEs7pa42X-f9FbTQ5wY9d2-a89wumJz','https://lh3.googleusercontent.com/d/116hewT6eFfNS4ws39ngoxf-AJrdpd9Vc','https://lh3.googleusercontent.com/d/1RrUqiUMJFzrOo2WlAYpU0EAoKR7nHEpZ','https://lh3.googleusercontent.com/d/1i5CtydfWvAeiCLxwhDAhxOZHYKf8mmko','https://lh3.googleusercontent.com/d/1iep8jSPHyAG3HIvMKv7wg_RU_jtioaqv','https://lh3.googleusercontent.com/d/1dFvhUXJUSOok5HN0E8L53bRjL5HY71T3','https://lh3.googleusercontent.com/d/19rsUeekfJf21iRFKw_PogchmDdPtey3w','https://lh3.googleusercontent.com/d/1drAFAx88F4kA84XR7M-O9KUjMWS6TgES','https://lh3.googleusercontent.com/d/1k90iRvxMRoEFlR9iV39tDclObpc1dPRT','https://lh3.googleusercontent.com/d/1Ly2tQITNaQ9zjv88WalWoDmF9DxgIQZU','https://lh3.googleusercontent.com/d/1Bd36lyq3DJ-HRhw_PnDU7gbAxwBEzZgZ','https://lh3.googleusercontent.com/d/1ARqYmQLuFMbiPI4JlyKk0HnJOp4REIIR','https://lh3.googleusercontent.com/d/1a9F2gTjDW4f1bcEn8hAo2EQa7R6-iU34','https://lh3.googleusercontent.com/d/1NRkCUgGNa2LE92xKd_5SaTmkHoZS9Uo6','https://lh3.googleusercontent.com/d/1GdxP95j7mSIz5y6QzJRFUnx2WxsS8sWN','https://lh3.googleusercontent.com/d/1UbNwdA3JNCeboUrQcvf1BL8cHg5JO_Fq','https://lh3.googleusercontent.com/d/16GTWv9HMXNtvJQhNqkbTszYvlq47DxbS','https://lh3.googleusercontent.com/d/1KfvxzP2LyW3kWh7p_6kEBk4oRJAzQ3YO','https://lh3.googleusercontent.com/d/1LczeSVFHwrY0W821VypDmr417mZtff0M','https://lh3.googleusercontent.com/d/11xwOG_NV-pOglc7m1NyKQRoJY-cX1-Zn','https://lh3.googleusercontent.com/d/1suZLEbgjwyv416W7EQPcCbAVQl-wvrAY','https://lh3.googleusercontent.com/d/1ziBEsIe6wqyMt4FLAOTx1A70qSxr-FCd','https://lh3.googleusercontent.com/d/1KcaM0xQi0zEMAMVzBc9jjlKbxRJ9JfLw','https://lh3.googleusercontent.com/d/1rXO-rc5xQsfi5K5W9PvWvea-9z5hQjpq','https://lh3.googleusercontent.com/d/12uniryYGFMdc8E2oIOQFleL-UsW4bNsv','https://lh3.googleusercontent.com/d/1AuIATrcot1IJlJZXon7zGVi9m60kOZRB','https://lh3.googleusercontent.com/d/1owogLxhvOe29yRbT4m2EWKwqSKGyFZEc','https://lh3.googleusercontent.com/d/1H0E-G2qPd5DztsZB7FDRJg09IbkowrXJ','https://lh3.googleusercontent.com/d/1bALxdIuJkH3bmY8RsWcvhk9Uzc2ZueVK','https://lh3.googleusercontent.com/d/1OBnOZnl_ftXNrw0zbFdGHYin6HwzFAtj']}];
+var cur={ed:0,foto:0};
+function openGaleria(i){cur.ed=i;cur.foto=0;var e=edicoes[i];document.getElementById('galeriaTitle').textContent=e.title;document.getElementById('galeriaSubtitle').textContent=e.sub;var tb=document.getElementById('galeriaThumbs');tb.innerHTML='';e.f.forEach(function(s,j){var t=document.createElement('div');t.className='g-thumb'+(j===0?' active':'');t.innerHTML='<img src="'+s.replace('w=1200','w=200')+'" alt="" loading="lazy">';t.onclick=function(){setFoto(j);};tb.appendChild(t);});setFoto(0,false);document.getElementById('galeriaOverlay').classList.add('open');document.body.style.overflow='hidden';}
+function closeGaleria(){document.getElementById('galeriaOverlay').classList.remove('open');document.body.style.overflow='';}
+function setFoto(i,a){if(a===undefined)a=true;var e=edicoes[cur.ed];if(i<0)i=e.f.length-1;if(i>=e.f.length)i=0;cur.foto=i;var img=document.getElementById('galeriaImg');if(a){img.classList.add('fade');setTimeout(function(){img.src=e.f[i];img.classList.remove('fade');},200);}else{img.src=e.f[i];}document.getElementById('galeriaCount').textContent=(i+1)+' / '+e.f.length;document.querySelectorAll('.g-thumb').forEach(function(t,j){t.classList.toggle('active',j===i);});var at=document.getElementById('galeriaThumbs').children[i];if(at)at.scrollIntoView({behavior:'smooth',inline:'center',block:'nearest'});}
+function navGaleria(d){setFoto(cur.foto+d);}
+function downloadFoto(){var src=document.getElementById('galeriaImg').src;fetch(src).then(function(r){return r.blob();}).then(function(b){var a=document.createElement('a');a.href=URL.createObjectURL(b);a.download='deepdash-foto.jpg';a.click();URL.revokeObjectURL(a.href);}).catch(function(){window.open(src,'_blank');});}
+document.getElementById('galeriaOverlay').addEventListener('click',function(e){if(e.target===this)closeGaleria();});
+document.addEventListener('keydown',function(e){if(!document.getElementById('galeriaOverlay').classList.contains('open'))return;if(e.key==='Escape')closeGaleria();if(e.key==='ArrowLeft')navGaleria(-1);if(e.key==='ArrowRight')navGaleria(1);});
+
+function scrollRadio(dir){
+  var g=document.getElementById('radioGrid');
+  g.scrollBy({left:dir*240,behavior:'smooth'});
+  setTimeout(updateRadioThumb,350);
+}
+function updateRadioThumb(){
+  var g=document.getElementById('radioGrid');
+  var thumb=document.getElementById('radioScrollThumb');
+  if(!g||!thumb)return;
+  var max=g.scrollWidth-g.clientWidth;
+  if(max<=0){thumb.style.width='100%';return;}
+  var pct=g.scrollLeft/max;
+  var tw=g.clientWidth/g.scrollWidth*100;
+  thumb.style.width=tw+'%';
+  thumb.style.left=(pct*(100-tw))+'%';
+}
+function scrollRadioBar(e){
+  var bar=document.getElementById('radioScrollBar');
+  var g=document.getElementById('radioGrid');
+  var pct=e.offsetX/bar.offsetWidth;
+  g.scrollLeft=pct*(g.scrollWidth-g.clientWidth);
+  setTimeout(updateRadioThumb,50);
+}
+document.addEventListener('DOMContentLoaded',function(){
+  var g=document.getElementById('radioGrid');
+  if(g){g.addEventListener('scroll',updateRadioThumb);setTimeout(updateRadioThumb,500);}
+});
+var obs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
+document.querySelectorAll('.fade-up').forEach(function(el){obs.observe(el);});
+</script>
+</body>
+</html>
