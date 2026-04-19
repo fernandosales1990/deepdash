@@ -6,8 +6,17 @@
 <title>Deep Dash</title>
 <link rel="icon" type="image/png" href="imagens/img-01-d7beb00da8.png">
 <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- ============================================================
+     CONFIGURAÇÃO DA SEÇÃO INGRESSOS — edite apenas este bloco
+     ============================================================ -->
+<script>
+  const VENDA_ATIVA   = false;          // true = mostra banner de venda | false = mostra "Em Breve"
+  const LINK_INGRESSO = "";             // ex: "https://sympla.com.br/..."
+  const NOME_DO_EVENTO = "";            // ex: "DEEP DASH #7"
+  const ENDPOINT_LEADS = "";            // URL do Google Apps Script (deixe vazio enquanto não tiver)
+</script>
 <style>
-  :root{--black:#080808;--white:#f5f5f5;--red:#c8102e;--gray:#1a1a1a;--text-muted:#666;}
+  :root{--black:#080808;--white:#f5f5f5;--red:#c8102e;--gray:#1a1a1a;--text-muted:#aaaaaa;}
   *{margin:0;padding:0;box-sizing:border-box;} html{scroll-behavior:smooth;}
   body{background:var(--black);color:var(--white);font-family:'Inter',sans-serif;overflow-x:hidden;}
   nav{position:fixed;top:0;width:100%;z-index:100;display:flex;justify-content:space-between;align-items:center;padding:0 48px;height:64px;background:rgba(8,8,8,0.92);backdrop-filter:blur(12px);border-bottom:1px solid #1f1f1f;}
@@ -53,7 +62,7 @@
   .edicao-num{font-family:'Bebas Neue',sans-serif;font-size:48px;color:#1f1f1f;line-height:1;}
   .edicao-name{font-family:'Bebas Neue',sans-serif;font-size:22px;letter-spacing:2px;margin:8px 0;}
   .edicao-date{font-size:11px;color:var(--text-muted);letter-spacing:2px;}
-  .edicao-lineup{margin-top:20px;font-size:12px;color:#888;line-height:2;}
+  .edicao-lineup{margin-top:20px;font-size:12px;color:#aaaaaa;line-height:2;}
   .edicao-fotos-count{margin-top:16px;font-size:10px;letter-spacing:3px;color:var(--red);text-transform:uppercase;display:flex;align-items:center;gap:8px;}
   .edicao-fotos-count::before{content:'';display:inline-block;width:16px;height:1px;background:var(--red);}
   #radioshow{background:var(--gray);}
@@ -74,7 +83,7 @@
   .radio-scroll-bar{flex:1;height:1px;background:#1a1a1a;position:relative;margin:0 8px;cursor:pointer;}
   .radio-scroll-thumb{height:1px;background:var(--red);width:30%;position:absolute;left:0;top:0;transition:width 0.2s;}
   .radio-cta{margin-top:24px;}
-  .radio-link{display:inline-flex;align-items:center;gap:10px;color:#888;font-size:11px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;border:1px solid #1f1f1f;padding:14px 28px;transition:all 0.3s;}
+  .radio-link{display:inline-flex;align-items:center;gap:10px;color:#aaaaaa;font-size:11px;letter-spacing:3px;text-transform:uppercase;text-decoration:none;border:1px solid #1f1f1f;padding:14px 28px;transition:all 0.3s;}
   .radio-link:hover{border-color:var(--red);color:var(--white);}
   .radio-link svg{flex-shrink:0;}
   #videos{background:var(--black);}
@@ -94,13 +103,13 @@
   .dj-name{font-family:'Bebas Neue',sans-serif;font-size:18px;letter-spacing:2px;}
   .dj-role{font-size:10px;letter-spacing:3px;margin-top:4px;color:var(--text-muted);}
   .dj-role.res{color:var(--red);}
-  .dj-ig{display:inline-flex;align-items:center;justify-content:center;margin-top:8px;color:#555;text-decoration:none;border:1px solid #2a2a2a;padding:6px;transition:all 0.2s;}
+  .dj-ig{display:inline-flex;align-items:center;justify-content:center;margin-top:8px;color:#aaaaaa;text-decoration:none;border:1px solid #2a2a2a;padding:6px;transition:all 0.2s;}
   .dj-ig:hover{color:var(--white);border-color:#666;}
   .dj-edicoes{display:flex;gap:6px;justify-content:center;flex-wrap:wrap;margin-top:12px;}
-  .dj-edicoes span{font-size:9px;letter-spacing:2px;color:#444;border:1px solid #1f1f1f;padding:3px 7px;}
+  .dj-edicoes span{font-size:9px;letter-spacing:2px;color:#aaaaaa;border:1px solid #1f1f1f;padding:3px 7px;}
   #contato{background:var(--black);}
   .contato-inner{max-width:600px;}
-  .contato-inner p{font-size:14px;color:#888;line-height:1.9;margin-bottom:40px;}
+  .contato-inner p{font-size:14px;color:#aaaaaa;line-height:1.9;margin-bottom:40px;}
   .contact-links{display:flex;flex-direction:column;gap:16px;}
   .contact-link{display:flex;align-items:center;gap:16px;padding:20px 28px;border:1px solid #1f1f1f;text-decoration:none;color:var(--white);font-size:13px;letter-spacing:2px;transition:all 0.3s;}
   .contact-link:hover{border-color:var(--red);padding-left:40px;}
@@ -139,6 +148,27 @@
   .aniv-banner{font-size:9px;letter-spacing:4px;color:var(--red);text-transform:uppercase;margin-bottom:20px;opacity:0.8;}
   .fade-up{opacity:0;transform:translateY(30px);transition:opacity 0.7s,transform 0.7s;}
   .fade-up.visible{opacity:1;transform:translateY(0);}
+  /* Estilos do formulário família */
+  .familia-form{display:flex;flex-direction:column;gap:16px;margin-top:32px;max-width:700px;}
+  .familia-form-row{display:flex;gap:16px;}
+  .familia-input{flex:1;background:transparent;border:none;border-bottom:1px solid #fff;color:var(--white);font-family:'Inter',sans-serif;font-size:13px;letter-spacing:1px;padding:12px 0;outline:none;}
+  .familia-input::placeholder{color:#aaaaaa;}
+  .familia-btn{margin-top:8px;padding:16px 40px;background:var(--red);color:var(--white);border:none;font-family:'Inter',sans-serif;font-size:13px;letter-spacing:4px;text-transform:uppercase;cursor:pointer;transition:opacity 0.2s;align-self:flex-start;}
+  .familia-btn:hover{opacity:0.85;}
+  .familia-btn:disabled{opacity:0.5;cursor:not-allowed;}
+  .familia-sucesso{display:none;font-size:15px;color:var(--white);line-height:1.8;margin-top:24px;padding:24px;border-left:2px solid var(--red);}
+  .familia-erro{display:none;color:var(--red);font-size:12px;letter-spacing:1px;margin-top:8px;}
+  .banner-venda{background:linear-gradient(135deg,#0d0d0d,#1a0205);border:1px solid var(--red);padding:40px;margin-bottom:40px;text-align:center;}
+  .banner-venda-eyebrow{font-size:10px;letter-spacing:5px;color:var(--red);text-transform:uppercase;margin-bottom:16px;}
+  .banner-venda-nome{font-family:'Bebas Neue',sans-serif;font-size:clamp(24px,4vw,40px);letter-spacing:2px;margin-bottom:32px;}
+  .banner-venda-btn{display:inline-block;padding:18px 48px;background:var(--red);color:var(--white);font-size:13px;letter-spacing:4px;text-transform:uppercase;text-decoration:none;font-family:'Inter',sans-serif;transition:opacity 0.2s;}
+  .banner-venda-btn:hover{opacity:0.85;}
+  .banner-venda-sub{margin-top:20px;font-size:12px;color:#aaaaaa;letter-spacing:1px;}
+  .banner-venda-sub strong{color:var(--white);}
+  .familia-sep{width:100%;height:1px;background:#1f1f1f;margin:48px 0;}
+  .familia-instagram-intro{font-size:12px;color:#aaaaaa;letter-spacing:2px;text-transform:uppercase;margin-bottom:16px;}
+  .mobile-menu-ingressos{display:block;margin:12px 24px;padding:16px 24px;background:var(--red);color:var(--white) !important;text-decoration:none;font-size:11px;letter-spacing:4px;text-transform:uppercase;text-align:center;border-bottom:none !important;}
+
   @media(max-width:900px){
     nav{padding:0 20px;}
     .nav-links{display:none;}
@@ -148,16 +178,23 @@
     section{padding:64px 20px;}
     #hero{padding:0 20px 56px;position:relative;}
     .hero-eyebrow{position:absolute;top:76px;left:20px;}
+    /* Alteração 3: foto da história como background no mobile */
+    #historia{background-image:linear-gradient(rgba(0,0,0,0.78),rgba(0,0,0,0.78)),url('imagens/img-historia.png');background-size:cover;background-position:center;background-repeat:no-repeat;}
     .historia-grid{grid-template-columns:1fr;gap:32px;min-height:auto;}
     .historia-img{display:none;}
+    /* Alteração 4: fontes mínimas no mobile */
     .edicoes-grid{grid-template-columns:repeat(2,1fr);}
     .edicao-card{padding:16px;}
     .edicao-num{display:none;}
     .edicao-name{font-size:17px;letter-spacing:1px;}
-    .edicao-date{font-size:9px;letter-spacing:1px;}
-    .edicao-lineup{font-size:10px;margin-top:10px;line-height:1.7;}
-    .edicao-fotos-count{font-size:9px;}
-    .aniv-banner{font-size:8px;letter-spacing:2px;margin-bottom:10px;}
+    .edicao-date{font-size:12px;letter-spacing:1px;}
+    .edicao-lineup{font-size:14px;margin-top:10px;line-height:1.7;}
+    .edicao-fotos-count{font-size:12px;}
+    .aniv-banner{font-size:12px;letter-spacing:2px;margin-bottom:10px;}
+    .section-label{font-size:12px;}
+    .hero-cta{font-size:16px;}
+    .familia-btn{font-size:16px;}
+    .familia-form-row{flex-direction:column;}
     .videos-grid{grid-template-columns:1fr;}
     .dj-grid{grid-template-columns:repeat(2,1fr);}
     footer{flex-direction:column;gap:16px;text-align:center;padding:32px 20px;}
@@ -189,8 +226,8 @@
 </nav>
 <div class="mobile-menu" id="mobileMenu">
   <ul>
+    <li><a href="#ingressos" class="mobile-menu-ingressos" onclick="closeMobileMenu()">Ingressos</a></li>
     <li><a href="#historia" onclick="closeMobileMenu()">Hist&oacute;ria</a></li>
-    <li><a href="#ingressos" onclick="closeMobileMenu()">Ingressos</a></li>
     <li><a href="#edicoes" onclick="closeMobileMenu()">Edi&ccedil;&otilde;es</a></li>
     <li><a href="#radioshow" onclick="closeMobileMenu()">Radio Show</a></li>
     <li><a href="#videos" onclick="closeMobileMenu()">V&iacute;deos</a></li>
@@ -218,25 +255,66 @@
     <img class="historia-img" src='imagens/img-historia.png' alt="Deep Dash" loading="lazy">
   </div>
 </section>
-<section id="ingressos" style="min-height:auto;padding-top:80px;padding-bottom:80px;">
-  <p class="section-label fade-up">Em Breve</p>
-  <h2 class="section-title fade-up">INGRESSOS</h2>
-  <div class="fade-up" style="margin-top:40px;text-align:center;">
-    <p style="color:var(--text-muted);font-size:12px;letter-spacing:3px;text-transform:uppercase;max-width:480px;margin:0 auto;line-height:2;">
-      Os ingressos para a próxima edição estarão disponíveis em breve.<br>Fique de olho nas nossas redes sociais.
-    </p>
-    <a href="https://www.instagram.com/deepdashmusic/" target="_blank" class="radio-link" style="margin-top:40px;">
+<section id="ingressos" style="padding-top:80px;padding-bottom:80px;">
+
+  <!-- BLOCO A: banner de venda — aparece só quando VENDA_ATIVA = true -->
+  <div id="blocoVenda" style="display:none;">
+    <div class="banner-venda">
+      <div class="banner-venda-eyebrow">Ingressos Abertos</div>
+      <div class="banner-venda-nome" id="nomeEvento"></div>
+      <a id="linkIngresso" href="#" target="_blank" rel="noopener" class="banner-venda-btn">Comprar Ingresso</a>
+      <p class="banner-venda-sub">Já é família? Você recebeu o link 24h antes. Ainda não é? <strong>Entra aí.</strong></p>
+    </div>
+  </div>
+
+  <!-- BLOCO B: em breve — aparece só quando VENDA_ATIVA = false -->
+  <div id="blocoEmBreve">
+    <p class="section-label">Em Breve</p>
+    <h2 class="section-title">INGRESSOS</h2>
+    <p style="font-size:15px;color:#aaaaaa;line-height:1.9;max-width:560px;margin-bottom:0;">A próxima edição está em preparação. Entra pra família pra ser o primeiro a saber — e ter ingresso 24h antes do público.</p>
+  </div>
+
+  <!-- SEPARADOR -->
+  <div class="familia-sep"></div>
+
+  <!-- BLOCO C: formulário família — SEMPRE aparece -->
+  <div id="blocoFamilia">
+    <p class="section-label">Família Deep Dash</p>
+    <h3 style="font-family:'Bebas Neue',sans-serif;font-size:clamp(28px,4vw,48px);letter-spacing:2px;line-height:1;margin-bottom:16px;">ENTRA PRA FAMÍLIA<br>DEEP DASH</h3>
+    <p style="font-size:14px;color:#aaaaaa;line-height:1.9;max-width:560px;margin-bottom:0;">Antes de todo mundo. Ingresso 24h na frente, novidades em primeira mão e uma pista que te recebe como quem já é de casa.</p>
+    <div id="formWrap">
+      <form class="familia-form" id="familiaForm" onsubmit="submitFamilia(event)">
+        <div class="familia-form-row">
+          <input class="familia-input" type="text" name="nome" id="fNome" required placeholder="Seu nome">
+          <input class="familia-input" type="email" name="email" id="fEmail" required placeholder="Seu e-mail">
+          <input class="familia-input" type="tel" name="whatsapp" id="fWhats" required placeholder="WhatsApp com DDD" inputmode="tel" maxlength="15">
+        </div>
+        <button type="submit" class="familia-btn" id="familiaBtn">Cadastrar</button>
+        <div class="familia-erro" id="familiaErro">Deu ruim. Tenta de novo em alguns segundos.</div>
+      </form>
+    </div>
+    <div class="familia-sucesso" id="familiaSucesso">Bem-vindo à família. Você vai receber o próximo ingresso antes de todo mundo.</div>
+  </div>
+
+  <!-- SEPARADOR -->
+  <div class="familia-sep"></div>
+
+  <!-- BLOCO D: Instagram — SEMPRE aparece -->
+  <div id="blocoInstagram">
+    <p class="familia-instagram-intro">Prefere ficar por dentro pelo feed? <strong style="color:var(--white);">Siga a gente.</strong></p>
+    <a href="https://www.instagram.com/deepdashmusic/" target="_blank" class="radio-link">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg>
       Seguir no Instagram
     </a>
   </div>
+
 </section>
 
 
 
 <section id="edicoes">
-  <p class="section-label fade-up">Edi&ccedil;&otilde;es</p>
-  <h2 class="section-title fade-up">TODAS AS<br>EDI&Ccedil;&Otilde;ES</h2>
+  <p class="section-label">Edi&ccedil;&otilde;es</p>
+  <h2 class="section-title">TODAS AS<br>EDI&Ccedil;&Otilde;ES</h2>
   <div class="edicoes-grid">
     <div class="edicao-card fade-up"><div class="edicao-num">01</div><div class="edicao-name">DEEP DASH #1</div><div class="edicao-date">17 AGO 2024 &mdash; RIO DE JANEIRO</div><div class="edicao-lineup">Efeeme &middot; Fersa &middot; FONS &middot; L&ecirc; Fernandez &middot; Lucas Marques &middot; Sicotti &middot; Villain Mode &middot; Weski</div></div>
     <div class="edicao-card fade-up"><div class="edicao-num">02</div><div class="edicao-name">DEEP DASH #2</div><div class="edicao-date">30 NOV 2024 &mdash; RIO DE JANEIRO</div><div class="edicao-lineup">Fersa &middot; Helciin &middot; L&ecirc; Fernandez &middot; Pacheco &middot; Stenx &middot; Villain Mode &middot; Weski</div></div>
@@ -254,10 +332,10 @@
   </div>
 </section>
 <section id="radioshow">
-  <p class="section-label fade-up">Ouça</p>
-  <h2 class="section-title fade-up">RADIO SHOW</h2>
+  <p class="section-label">Ouça</p>
+  <h2 class="section-title">RADIO SHOW</h2>
   <div class="radio-scroll-wrap">
-  <div class="radio-grid fade-up" id="radioGrid">
+  <div class="radio-grid" id="radioGrid">
     <div class="radio-card">
       <div class="radio-embed-wrap">
         <iframe scrolling="no" frameborder="no" allow="autoplay" src="https://w.soundcloud.com/player/?url=https://soundcloud.com/deepdashmusic/le-fernandez-deep-dash-1-year-230825&color=%23c8102e&auto_play=false&hide_related=true&show_comments=false&show_user=false&show_reposts=false&show_teaser=false&visual=true"></iframe>
@@ -311,7 +389,7 @@
       </div>
     </div>
   </div>
-  <div class="radio-scroll-arrows fade-up">
+  <div class="radio-scroll-arrows">
     <button class="radio-arrow" onclick="scrollRadio(-1)">&#x2039;</button>
     <div class="radio-scroll-bar" id="radioScrollBar" onclick="scrollRadioBar(event)">
       <div class="radio-scroll-thumb" id="radioScrollThumb"></div>
@@ -319,7 +397,7 @@
     <button class="radio-arrow" onclick="scrollRadio(1)">&#x203a;</button>
   </div>
   </div>
-  <div class="radio-cta fade-up">
+  <div class="radio-cta">
     <a href="https://soundcloud.com/deepdashmusic" target="_blank" class="radio-link">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="16" height="16"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>
       Ouvir todos os sets no SoundCloud
@@ -328,17 +406,17 @@
 </section>
 
 <section id="videos">
-  <p class="section-label fade-up">Conte&uacute;do</p>
-  <h2 class="section-title fade-up">V&Iacute;DEOS</h2>
+  <p class="section-label">Conte&uacute;do</p>
+  <h2 class="section-title">V&Iacute;DEOS</h2>
   <div class="videos-grid">
     <div class="video-card fade-up"><iframe class="video-embed" src="https://www.youtube.com/embed/joVxOcVjb-8?start=588" allowfullscreen></iframe><div class="video-info"><div class="video-title">FERSA | DEEP DASH SESSIONS</div><div class="video-meta">DEEP DASH</div></div></div>
     <div class="video-card fade-up"><iframe class="video-embed" src="https://www.youtube.com/embed/A1BE81csXjg?start=5" allowfullscreen></iframe><div class="video-info"><div class="video-title">L&Ecirc; FERNANDEZ | DEEP DASH SESSIONS</div><div class="video-meta">DEEP DASH</div></div></div>
   </div>
 </section>
 <section id="djs">
-  <p class="section-label fade-up">Artistas</p>
-  <h2 class="section-title fade-up">DJS</h2>
-  <div class="dj-grid fade-up">
+  <p class="section-label">Artistas</p>
+  <h2 class="section-title">DJS</h2>
+  <div class="dj-grid">
     <div class="dj-card residente"><img class="dj-avatar" src="imagens/img-04-45599d2a99.jpg" alt="Fersa" loading="lazy"><div class="dj-name">Fersa</div><div class="dj-role res">Residente</div><a href="https://www.instagram.com/fersamusic/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
     <div class="dj-card residente"><img class="dj-avatar" src="imagens/img-05-1c5e5bed40.jpg" alt="Le Fernandez" loading="lazy"><div class="dj-name">L&ecirc; Fernandez</div><div class="dj-role res">Residente</div><a href="https://www.instagram.com/djlefernandez/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
     <div class="dj-card residente"><img class="dj-avatar" src="imagens/img-06-d38c3644eb.jpg" alt="Weski" loading="lazy"><div class="dj-name">Weski</div><div class="dj-role res">Residente</div><a href="https://www.instagram.com/weskimusic/" target="_blank" class="dj-ig"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="14" height="14"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="4"/><circle cx="17.5" cy="6.5" r="1" fill="currentColor" stroke="none"/></svg></a></div>
@@ -356,9 +434,9 @@
 </section>
 
 <section id="contato">
-  <p class="section-label fade-up">Contato</p>
-  <h2 class="section-title fade-up">FALE COM<br>A GENTE</h2>
-  <div class="contato-inner fade-up">
+  <p class="section-label">Contato</p>
+  <h2 class="section-title">FALE COM<br>A GENTE</h2>
+  <div class="contato-inner">
     <p>Para bookings, parcerias ou qualquer d&uacute;vida, entre em contato pelos canais abaixo.</p>
     <div class="contact-links">
       <a href="/cdn-cgi/l/email-protection#80e3efeef4e1f4efc0e4e5e5f0e4e1f3e8aee3efedaee2f2" class="contact-link"><span>Email</span><span class="__cf_email__" data-cfemail="fb9894958f9a8f94bb9f9e9e8b9f9a8893d5989496d59989">[email&#160;protected]</span></a>
@@ -432,12 +510,70 @@ document.addEventListener('DOMContentLoaded',function(){
   var g=document.getElementById('radioGrid');
   if(g){g.addEventListener('scroll',updateRadioThumb);setTimeout(updateRadioThumb,500);}
 });
+// Fade-in apenas nos cards individuais (seções ficam sempre visíveis)
 var obs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
-document.querySelectorAll('.fade-up').forEach(function(el){obs.observe(el);});
+document.querySelectorAll('.edicao-card, .video-card').forEach(function(el){obs.observe(el);});
+
+// Hamburger
 var hamburger=document.getElementById('hamburger');
 var mobileMenu=document.getElementById('mobileMenu');
 hamburger.addEventListener('click',function(){hamburger.classList.toggle('open');mobileMenu.classList.toggle('open');});
 function closeMobileMenu(){hamburger.classList.remove('open');mobileMenu.classList.remove('open');}
+
+// Ingressos: exibe bloco correto conforme VENDA_ATIVA
+(function(){
+  if(VENDA_ATIVA){
+    document.getElementById('blocoVenda').style.display='';
+    document.getElementById('blocoEmBreve').style.display='none';
+    if(NOME_DO_EVENTO) document.getElementById('nomeEvento').textContent=NOME_DO_EVENTO;
+    if(LINK_INGRESSO)  document.getElementById('linkIngresso').href=LINK_INGRESSO;
+  }
+})();
+
+// Máscara WhatsApp: (11) 98765-4321
+document.getElementById('fWhats').addEventListener('input',function(){
+  var v=this.value.replace(/\D/g,'');
+  if(v.length<=2)       this.value=v;
+  else if(v.length<=6)  this.value='('+v.slice(0,2)+') '+v.slice(2);
+  else if(v.length<=10) this.value='('+v.slice(0,2)+') '+v.slice(2,6)+'-'+v.slice(6);
+  else                  this.value='('+v.slice(0,2)+') '+v.slice(2,7)+'-'+v.slice(7,11);
+});
+
+// Envio do formulário Família
+function submitFamilia(ev){
+  ev.preventDefault();
+  var nome=document.getElementById('fNome').value.trim();
+  var email=document.getElementById('fEmail').value.trim();
+  var whats=document.getElementById('fWhats').value.trim();
+  var btn=document.getElementById('familiaBtn');
+  var erro=document.getElementById('familiaErro');
+  var sucesso=document.getElementById('familiaSucesso');
+  var formWrap=document.getElementById('formWrap');
+  erro.style.display='none';
+  btn.disabled=true;
+  btn.textContent='ENVIANDO...';
+  // Sem endpoint configurado: simula sucesso direto
+  if(!ENDPOINT_LEADS){
+    formWrap.style.display='none';
+    sucesso.style.display='block';
+    return;
+  }
+  fetch(ENDPOINT_LEADS,{
+    method:'POST',
+    mode:'no-cors',
+    headers:{'Content-Type':'application/json'},
+    body:JSON.stringify({nome:nome,email:email,whatsapp:whats})
+  })
+  .then(function(){
+    formWrap.style.display='none';
+    sucesso.style.display='block';
+  })
+  .catch(function(){
+    btn.disabled=false;
+    btn.textContent='Cadastrar';
+    erro.style.display='block';
+  });
+}
 </script>
 </body>
 </html>
