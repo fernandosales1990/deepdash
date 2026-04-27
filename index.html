@@ -520,13 +520,18 @@ var mobileMenu=document.getElementById('mobileMenu');
 hamburger.addEventListener('click',function(){hamburger.classList.toggle('open');mobileMenu.classList.toggle('open');});
 function closeMobileMenu(){hamburger.classList.remove('open');mobileMenu.classList.remove('open');}
 
-// Ingressos: exibe bloco correto conforme VENDA_ATIVA
+// Ingressos: exibe bloco correto e reposiciona seção conforme VENDA_ATIVA
 (function(){
   if(VENDA_ATIVA){
+    // Mostra banner de venda, esconde "Em Breve"
     document.getElementById('blocoVenda').style.display='';
     document.getElementById('blocoEmBreve').style.display='none';
     if(NOME_DO_EVENTO) document.getElementById('nomeEvento').textContent=NOME_DO_EVENTO;
     if(LINK_INGRESSO)  document.getElementById('linkIngresso').href=LINK_INGRESSO;
+    // Move seção #ingressos para logo após o hero
+    var ingressos=document.getElementById('ingressos');
+    var hero=document.getElementById('hero');
+    hero.parentNode.insertBefore(ingressos,hero.nextSibling);
   }
 })();
 
