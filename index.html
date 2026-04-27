@@ -206,6 +206,10 @@
     .radio-card{width:180px;}
     .contact-link:hover{padding-left:28px;}
   }
+  /* Botão flutuante */
+  .fab-familia{position:fixed;bottom:28px;right:24px;z-index:150;background:var(--red);color:var(--white);font-family:'Inter',sans-serif;font-size:10px;letter-spacing:3px;text-transform:uppercase;padding:14px 22px;text-decoration:none;transition:opacity 0.4s,transform 0.4s;box-shadow:0 4px 24px rgba(200,16,46,0.4);}
+  .fab-familia:hover{opacity:0.85;}
+  .fab-familia.hidden{opacity:0;pointer-events:none;transform:translateY(10px);}
 </style>
 </head>
 <body>
@@ -328,7 +332,6 @@
   <div class="edicao-lineup">Fersa &middot; L&ecirc; Fernandez &middot; Lucas Marques &middot; Villain Mode &middot; Weski</div>
 </div>
     <div class="edicao-card fade-up" onclick="openGaleria(5)" style="background-image:url('https://lh3.googleusercontent.com/d/1Oqqt8DbZYiwRsAMWJRob-q8l_UCmUr-z');"><div class="edicao-num">06</div><div class="edicao-name">DEEP DASH #6</div><div class="edicao-date">06 MAR 2026 &mdash; S&Atilde;O PAULO</div><div class="edicao-lineup">Bauhouse &middot; Fersa &middot; Fit &middot; L&ecirc; Fernandez &middot; Weski</div><div class="edicao-fotos-count">208 fotos</div></div>
-    <div class="edicao-card fade-up" style="border:1px dashed #333;display:flex;flex-direction:column;justify-content:center;align-items:center;text-align:center;min-height:180px;cursor:default;"><div class="edicao-name" style="color:#444;">EM BREVE</div><div class="edicao-date" style="margin-top:8px;">PR&Oacute;XIMA EDI&Ccedil;&Atilde;O</div></div>
   </div>
 </section>
 <section id="radioshow">
@@ -451,6 +454,8 @@
   <p>&copy; 2024 Deep Dash. S&atilde;o Paulo.</p>
 </footer>
 
+<a href="#blocoFamilia" class="fab-familia" id="fabFamilia">Entre para a Família</a>
+
 <div class="galeria-overlay" id="galeriaOverlay">
   <div class="galeria-header">
     <div><div class="galeria-title" id="galeriaTitle"></div><div class="galeria-subtitle" id="galeriaSubtitle"></div></div>
@@ -510,6 +515,20 @@ document.addEventListener('DOMContentLoaded',function(){
   var g=document.getElementById('radioGrid');
   if(g){g.addEventListener('scroll',updateRadioThumb);setTimeout(updateRadioThumb,500);}
 });
+// Reordenar seções: Edições → DJs → História → Radio → Vídeos → Ingressos
+(function(){
+  var order=['edicoes','djs','historia','radioshow','videos','ingressos'];
+  var prev=document.getElementById('hero');
+  order.forEach(function(id){var el=document.getElementById(id);if(el){prev.after(el);prev=el;}});
+})();
+
+// Botão flutuante — esconde ao chegar na seção de ingressos
+var fabFamilia=document.getElementById('fabFamilia');
+var fabObs=new IntersectionObserver(function(en){
+  en.forEach(function(e){fabFamilia.classList.toggle('hidden',e.isIntersecting);});
+},{threshold:0.1});
+fabObs.observe(document.getElementById('ingressos'));
+
 // Fade-in apenas nos cards individuais (seções ficam sempre visíveis)
 var obs=new IntersectionObserver(function(en){en.forEach(function(e){if(e.isIntersecting)e.target.classList.add('visible');});},{threshold:0.1});
 document.querySelectorAll('.edicao-card, .video-card').forEach(function(el){obs.observe(el);});
