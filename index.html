@@ -50,7 +50,8 @@
   #historia{background:var(--black);display:flex;align-items:stretch;}
   .historia-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:stretch;min-height:70vh;}
   .historia-text p{font-size:15px;line-height:1.9;color:#aaa;margin-bottom:20px;}
-  .historia-img{width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(20%);}
+  .historia-img-wrap{position:relative;overflow:hidden;}
+  .historia-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(20%);}
   #edicoes{background:linear-gradient(rgba(8,8,8,0.85),rgba(8,8,8,0.85)),url('imagens/img-bg-edicoes.png') center/cover no-repeat;}
   .edicoes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
   .edicao-card{background:rgba(8,8,8,0.55);padding:32px;cursor:pointer;transition:all 0.3s;position:relative;overflow:hidden;background-size:cover;background-position:center;}
@@ -256,7 +257,9 @@
       <p>N&atilde;o somos s&oacute; uma festa. Somos uma comunidade construída em torno do som underground &mdash; house, techno e tudo que pulsa nas margens. Cada edi&ccedil;&atilde;o &eacute; um cap&iacute;tulo, cada tracklist &eacute; uma declara&ccedil;&atilde;o, cada noite &eacute; &uacute;nica.</p>
       <p>Em seis edi&ccedil;&otilde;es, passamos por Rio de Janeiro e S&atilde;o Paulo, reunimos artistas que acreditam no mesmo movimento e provamos que d&aacute; pra fazer diferente. Estamos aqui para ficar.</p>
     </div>
-    <img class="historia-img" src='imagens/img-historia.png' alt="Deep Dash" loading="lazy">
+    <div class="historia-img-wrap">
+      <img class="historia-img" src='imagens/img-historia.png' alt="Deep Dash" loading="lazy">
+    </div>
   </div>
 </section>
 <section id="ingressos" style="padding-top:80px;padding-bottom:80px;scroll-margin-top:64px;">
