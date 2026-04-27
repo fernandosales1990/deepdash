@@ -47,10 +47,11 @@
   section{padding:100px 48px;}
   .section-label{font-size:10px;letter-spacing:5px;text-transform:uppercase;color:var(--red);margin-bottom:16px;}
   .section-title{font-family:'Bebas Neue',sans-serif;font-size:clamp(40px,6vw,80px);line-height:1;letter-spacing:2px;margin-bottom:48px;}
-  #historia{background:var(--black);display:flex;align-items:stretch;}
-  .historia-grid{display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:stretch;min-height:70vh;}
+  #historia{background:var(--black);padding:0;}
+  .historia-grid{display:grid;grid-template-columns:1fr 1fr;gap:0;align-items:stretch;min-height:70vh;}
+  .historia-text{padding:100px 48px;}
   .historia-text p{font-size:15px;line-height:1.9;color:#aaa;margin-bottom:20px;}
-  .historia-img-wrap{position:relative;overflow:hidden;}
+  .historia-img-wrap{position:relative;overflow:hidden;min-height:400px;}
   .historia-img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;display:block;filter:grayscale(20%);}
   #edicoes{background:linear-gradient(rgba(8,8,8,0.85),rgba(8,8,8,0.85)),url('imagens/img-bg-edicoes.png') center/cover no-repeat;}
   .edicoes-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px;}
